@@ -1,0 +1,43 @@
+Peut-on créer une nouvelle partie ?
+-Ajout d'une entrée dans la table game
+-Ajout de plusieurs entrées dans la table participants
+
+Peut-on choisir le nombre de tour ?
+-Ajout d'un nombre choisie d'entrée dans la table round
+-Ajout des entrés dans chosenAnswer (réponse null)
+
+Le nombre de tour peut-être modifié ?
+-Ajout d'une nouvelle entrée dans la table round à chaque fois
+-Ajout des entrés dans chosenAnswer (réponse null)
+
+Peut-on assurer qu'une partie n'aura pas deux fois la même question ?
+-non pour la base de donnée
+-l'ensemble round.game_id et question_idquestion doivent être unique
+si on fusionne les entrées pour game_id défini
+
+Peut-on récupérer les participant d'un tour ?
+-Select sur participant où le game_id est le même que celui du round défini
+
+Un utilisateur peut-il ne pas répondre ?
+-oui (champ null)
+
+Peut-on récupérer toutes les réponses d'un utilisateur dans une partie ?
+-Select dans chosenAnswer de tous les rounds qui contient le game_id défini
+
+Peut-on récupérer toutes les réponses sur un tour ?
+-Select dans chosenAnswer pour un round défini
+
+Peut-on récupérer le nombre de réponse incomplete dans un tour ?
+-Select dans chosenAnswer des idanswer null pour un round défini
+
+une partie peut se terminer ?
+-Si le Select dans participants avec le status "en jeu" pour un game_id défini
+donne 2 résultats uniquement
+
+un participant peut perdre ?
+-Si dans chosenAnswer le count(idanswer) pour un idanswer défini n'est pas le plus grand
+
+un participant peut gagner ?
+-Si le Select dans participants avec le status "en jeu" pour un game_id défini
+donne 2 résultats uniquement
+
