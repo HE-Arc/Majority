@@ -22,3 +22,15 @@ Route::get('/rooms', [
   function () {
    return view('rooms');
 }]);
+
+Route::get('/createRoom', [
+  'middleware' => ['auth'],
+  function () {
+   return view('createroom');
+}]);
+
+Route::get('/game', [
+  'middleware' => ['auth'],
+  function () {
+   return view('game');
+}]);
