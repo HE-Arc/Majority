@@ -17,11 +17,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('/rooms', [
-  'middleware' => ['auth'],
-  function () {
-   return view('rooms');
-}]);
+
+Route::get('/rooms','RoomController@show');
 
 Route::get('/createRoom', [
   'middleware' => ['auth'],

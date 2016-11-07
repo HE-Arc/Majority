@@ -8,7 +8,7 @@ th{
 	font-size: 120%;
 }
 
-.listSalles{
+.listSalles, .listReponses{
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -19,4 +19,27 @@ th{
 
 .formCreateRoom{
 	padding: 5px 0 5px 15px;
+}
+
+.joueurs{
+	float: left;
+	width: 50%;
+	background-color: white;
+}
+
+.questionsReponses{
+	float: right;
+	width: 50%;
+	background-color: white;
+	padding-top: 15px;
+}
+
+.question{
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+}
+
+.reponse{
+	width: 150px;
 }
