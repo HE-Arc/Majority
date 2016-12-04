@@ -2,7 +2,13 @@
 
 use Illuminate\Database\Seeder;
 
-class QuestionAnswerTablesSeeder extends Seeder
+use App\Question;
+
+/**
+ * Remplit la table question avec des questions lisibles, chacune de ces questions
+ * aura au moins 4 réponses lisibles, inserées et associées à la bonne question dans la table answer
+ */
+class QuestionsAnswersTablesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +17,7 @@ class QuestionAnswerTablesSeeder extends Seeder
      */
     public function run()
     {
-		$recordedQuestion = [
+		$recordedQuestions = [
 		['Qui aiment les carottes',
 						['Moi',
 						'Pas moi',
@@ -29,18 +35,15 @@ class QuestionAnswerTablesSeeder extends Seeder
 						"c'est beau",
 						"Ceci n'est pas une pipe",
 						"Pluôt deux fois qu'une"]]];
-		
-		for($i = 0; $i < count($recordedQuestion); $i++){
-			$idQ = DB::table('question')->insertGetId([
-				'question' => $recordedQuestion[$i][0]
-			]);
-			print($idQ);
-			for($j = 0; $j < count($recordedQuestion[$i][1]); $j++){
-				DB::table('answer')->insert([
-				'answer' => $recordedQuestion[$i][1][$j],
-				'question_id' => $idQ
-			]);
+						
+		foreach($recordedQuestions as $val) {
+			list($question, $answers) = $val;
+			$q = Question::create(compact('question'));
+			
+			foreach($answers as $answer) {
+				$q->answers()->create(compact('answer'));
 			}
+			
 		}
     }
 }

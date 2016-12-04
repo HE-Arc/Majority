@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGameParticipantRoundTables extends Migration
+class CreateGamesParticipantsRoundsTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,26 +13,28 @@ class CreateGameParticipantRoundTables extends Migration
      */
     public function up()
     {
-        Schema::create('game', function (Blueprint $table) {
+        Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedinteger('max_duration');
             $table->unsignedinteger('owner_id');
+            $table->timestamps();
 			$table->foreign('owner_id')->references('id')->on('users');
         });
-        Schema::create('participant', function (Blueprint $table) {
+        Schema::create('participants', function (Blueprint $table) {
             $table->unsignedinteger('user_id');
             $table->unsignedinteger('game_id');
             $table->Integer('state');
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->foreign('game_id')->references('id')->on('game');
+			$table->foreign('game_id')->references('id')->on('games');
 			$table->primary(['user_id', 'game_id']);
         });
-        Schema::create('round', function (Blueprint $table) {
+        Schema::create('rounds', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedinteger('game_id');
             $table->unsignedinteger('question_id');
-			$table->foreign('game_id')->references('id')->on('game');
-			$table->foreign('question_id')->references('id')->on('question');
+            $table->timestamps();
+			$table->foreign('game_id')->references('id')->on('games');
+			$table->foreign('question_id')->references('id')->on('questions');
         });
     }
 
@@ -43,8 +45,8 @@ class CreateGameParticipantRoundTables extends Migration
      */
     public function down()
     {
-        Schema::drop('round');
-        Schema::drop('participant');
-        Schema::drop('game');
+        Schema::drop('rounds');
+        Schema::drop('participants');
+        Schema::drop('games');
     }
 }
