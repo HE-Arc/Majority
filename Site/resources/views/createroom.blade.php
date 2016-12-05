@@ -20,6 +20,9 @@
 					<label for="nbPlayerRoom">Nombre de joueurs maximum: </label>
 					<input type="text" id="nbPlayerRoom"/>
 					<br>
+					<label for="nbMaxRound">Nombre de round maximum: </label>
+					<input type="text" id="nbMaxRound"/>
+					<br>
 					<button type="submit">Créer</button>
 				</div>
 				</form> 

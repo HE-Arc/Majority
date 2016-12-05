@@ -7,3 +7,70 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+th,td {
+    padding: 15px;
+    text-align: left;
+}
+
+th{
+	text-align: center;
+	font-size: 120%;
+}
+
+.listSalles, .listReponses{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.btnCreateRoom{
+	margin: 5px 10px 5px 80%;
+}
+
+.formCreateRoom{
+	padding: 5px 0 5px 15px;
+}
+
+.joueurs{
+	background-color: white;
+    float: left;
+	width: 20%;
+	padding: 10px;
+}
+
+.questionsReponses{
+    float: right;
+	width: 80%;
+	background-color: white;
+	padding-top: 15px;
+}
+
+.question{
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+}
+
+.reponse{
+	width: 150px;
+}
+
+#reponse1, .chooseAnswer1{
+	background-color: #aaffaa;
+}
+
+#reponse2, .chooseAnswer2{
+	background-color: #ffffaa;
+}
+
+#reponse3, .chooseAnswer3{
+	background-color: #aaaaff;
+}
+
+#reponse4, .chooseAnswer4{
+	background-color: #ffaaaa;
+}
+
+.eliminatedPlayer{
+	background-color: #333333;
+}

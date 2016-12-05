@@ -20,14 +20,10 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/rooms','RoomController@show');
 
+Route::get('/game','GameController@show');
+
 Route::get('/createRoom', [
   'middleware' => ['auth'],
   function () {
    return view('createroom');
-}]);
-
-Route::get('/game', [
-  'middleware' => ['auth'],
-  function () {
-   return view('game');
 }]);
