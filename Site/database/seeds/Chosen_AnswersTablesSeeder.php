@@ -19,14 +19,13 @@ class Chosen_AnswersTablesSeeder extends Seeder
      */
     public function run()
     {
-		$games = Game::all();
+            $games = Game::all();
 
-		//print($games);
-		foreach($games as $game) {
+            //print($games);
+        foreach($games as $game) {
             $rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
-            $LastId = $rounds->max('id'); //comme on ne stocke pas l'ordre des rounds dans la Game
-                                          //j'ai fait cette solution-là, est-ce qu'il faudrait ajouter un champ ?
-            $lastRound = $rounds->where('id', $LastId)->first();
+            $LastId = $rounds->max('n_round');
+            $lastRound = $rounds->where('n_round', $LastId)->first();
             $participants = Participant::where('game_id',$game->id)->get();
 
             //debug
@@ -40,12 +39,13 @@ class Chosen_AnswersTablesSeeder extends Seeder
                 //print("answer ($answer->id) :$answer->answer\n");
 
                 //ajoute la réponse
-                $chosen_answer = $lastRound->Chosen_answers()->create(
-                    ['user_id' => $participant->user_id,
-                     'answer_id' => $answer->id]);
+                $chosen_answer = $answer->Chosen_answers()->create(
+                    ['n_round' => $lastRound->n_round,
+                     'game_id' => $lastRound->game_id,
+                     'user_id' => $participant->user_id]);
             }
             //debug
             //print("\n");
-		}
+        }
     }
 }

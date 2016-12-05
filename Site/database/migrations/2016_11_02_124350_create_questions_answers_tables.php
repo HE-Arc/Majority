@@ -13,7 +13,7 @@ class CreateQuestionsAnswersTables extends Migration
      */
     public function up()
     {
-		
+
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
@@ -22,8 +22,8 @@ class CreateQuestionsAnswersTables extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('answer');
-			$table->unsignedinteger('question_id');
-			$table->foreign('question_id')->references('id')->on('questions');
+            $table->unsignedinteger('question_id');
+            $table->foreign('question_id')->references('id')->on('questions');
             $table->timestamps();
         });
     }

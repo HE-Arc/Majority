@@ -17,33 +17,33 @@ class QuestionsAnswersTablesSeeder extends Seeder
      */
     public function run()
     {
-		$recordedQuestions = [
-		['Qui aiment les carottes',
-						['Moi',
-						'Pas moi',
-						'Lui',
-						"L'autre"]],
-		['La réponse du calcul 1+1',
-						['1',
-						'11',
-						'plus',
-						'pas assez',
-						'1914',
-						'Jules Cesar']],
-		["Que pensez-vous de ce texte \":)\"",
-						['Introspection',
-						"c'est beau",
-						"Ceci n'est pas une pipe",
-						"Pluôt deux fois qu'une"]]];
-						
-		foreach($recordedQuestions as $val) {
-			list($question, $answers) = $val;
-			$q = Question::create(compact('question'));
-			
-			foreach($answers as $answer) {
-				$q->answers()->create(compact('answer'));
-			}
-			
-		}
+        $recordedQuestions = [
+        ['Qui aiment les carottes',
+                        ['Moi',
+                        'Pas moi',
+                        'Lui',
+                        "L'autre"]],
+        ['La réponse du calcul 1+1',
+                        ['1',
+                        '11',
+                        'plus',
+                        'pas assez',
+                        '1914',
+                        'Jules Cesar']],
+        ["Que pensez-vous de ce texte \":)\"",
+                        ['Introspection',
+                        "c'est beau",
+                        "Ceci n'est pas une pipe",
+                        "Pluôt deux fois qu'une"]]];
+
+        foreach($recordedQuestions as $val) {
+            list($question, $answers) = $val;
+            $q = Question::create(compact('question'));
+
+            foreach($answers as $answer) {
+                $q->answers()->create(compact('answer'));
+            }
+
+        }
     }
 }

@@ -14,14 +14,16 @@ class CreateChosenAnswers extends Migration
     public function up()
     {
         Schema::create('chosen_answers', function (Blueprint $table) {
-			$table->unsignedinteger('user_id');
-			$table->unsignedinteger('round_id');
-			$table->unsignedinteger('answer_id')->nullable();
+            $table->unsignedinteger('user_id');
+            $table->unsignedinteger('n_round');
+            $table->unsignedinteger('game_id');
+            $table->unsignedinteger('answer_id')->nullable();
             $table->timestamps();
-			$table->foreign('user_id')->references('id')->on('users');
-			$table->foreign('round_id')->references('id')->on('rounds');
-			$table->foreign('answer_id')->references('id')->on('answers');
-			$table->primary(['user_id', 'round_id']);
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('n_round')->references('n_round')->on('rounds');
+            $table->foreign('game_id')->references('game_id')->on('rounds');
+            $table->foreign('answer_id')->references('id')->on('answers');
+            $table->primary(['user_id', 'n_round', 'game_id']);
         });
     }
 
