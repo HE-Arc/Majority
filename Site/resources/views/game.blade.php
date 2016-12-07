@@ -11,15 +11,15 @@
                 <div class="panel-heading">Partie</div>
 				@if($data["gameStarted"])
 				<div class="questionsReponses">
-				<p class="question">{{$data["question"]}}</p>
+				<p class="question">{{$data["question"]}} ?</p>
 				<table class="listReponses">
 					<tr>
-						<td><button type="button" id="reponse1" class="reponse">{{$data["answers"][0]}}</button></td>
-						<td><button type="button" id="reponse2" class="reponse">{{$data["answers"][1]}}</button></td>
+						<td><button type="button" id="reponse1" class="reponse">{{$data["answers"][0]->answer}}</button></td>
+						<td><button type="button" id="reponse2" class="reponse">{{$data["answers"][1]->answer}}</button></td>
 					</tr>
 					<tr>
-						<td><button type="button" id="reponse3" class="reponse">{{$data["answers"][2]}}</button></td>
-						<td><button type="button" id="reponse4" class="reponse">{{$data["answers"][3]}}</button></td>
+						<td><button type="button" id="reponse3" class="reponse">{{$data["answers"][2]->answer}}</button></td>
+						<td><button type="button" id="reponse4" class="reponse">{{$data["answers"][3]->answer}}</button></td>
 					</tr>
 				</table>
 				</div>

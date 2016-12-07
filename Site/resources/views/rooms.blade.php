@@ -18,23 +18,28 @@
 				<table border="2" class="listSalles">
 					<tr>
 						<th>Salle</th>
-						<th>Informations</th>
 						<th>Place</th>
 						<th></th>
 					</tr>
-					@foreach($characters as $room)
+					@foreach($games as $game)
 					<tr>
 						<td>
-						{{$room[0]}}
+						{{$game->description}}
 						</td>
 						<td>
-						{{$room[1]}}
+						0 / {{$game->max_player}}
 						</td>
 						<td>
-						{{$room[2]}} / {{$room[3]}}
-						</td>
-						<td>
-						<button type="button" >Rejoindre</button>
+						{!! Form::open(['url' => './game']) !!}
+							{!! Form::hidden('gameId', $game->id) !!}
+							{!! Form::hidden('typeRequest', 'join') !!}
+							{!! Form::hidden('idUser', Auth::id()) !!}
+							{!! Form::submit('Rejoindre') !!}
+						{!! Form::close() !!}
+						<!--<form action="./game">
+							<input type="hidden" id="id" "name="id" value="{{$game->id}}"/>
+							<input type="submit" value="Rejoindre" />
+						</form>-->
 						</td>
 					</tr>
 					@endforeach

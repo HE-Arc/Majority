@@ -15,12 +15,15 @@ Route::get('/','ListController@show');
 
 Auth::routes();
 
+Route::get('auth/logout', 'Auth\AuthController@logout');
+
 Route::get('/home', 'HomeController@index');
 
 
 Route::get('/rooms','RoomController@show');
 
 Route::get('/game','GameController@show');
+Route::post('/game','GameController@show');
 
 Route::get('/createRoom', [
   'middleware' => ['auth'],
