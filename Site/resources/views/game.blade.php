@@ -12,6 +12,7 @@
 				@if($data["gameStarted"])
 				<div class="questionsReponses">
 				<p class="question">{{$data["question"]}}</p>
+				<p class="question">{{$data["remainingTime"]}}</p>
 				<table class="listReponses">
 					<tr>
 						<td><button type="button" id="reponse1" class="reponse">{{$data["answers"][0]}}</button></td>
