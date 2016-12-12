@@ -20,7 +20,7 @@
 					{!! Form::label('nbPlayer', 'Nombre de joueurs maximum: ') !!}
 					{!! Form::number('nbPlayer') !!}
 					<br/>
-					{!! Form::label('duration', 'Durée d'un round: ') !!}
+					{!! Form::label('duration', "Durée d'un round: ") !!}
 					{!! Form::number('duration') !!}
 					<br/>
 					{!! Form::submit('Créer') !!}

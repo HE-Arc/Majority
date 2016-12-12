@@ -37,35 +37,32 @@ class GameController extends Controller
                 $game->rounds()->create(compact('question_id', 'n_round'));
 			}else if($_POST["typeRequest"] == "join"){
 				$participant = Participant::where('user_id', $_POST["idUser"])->where('game_id', $_POST["gameId"])->first();
+				
+				$game = Game::where('id', $_POST["gameId"])->first();
 				if($participant == null){
 					$questions = Question::all();
 					$state = 0;
 					$n_round = 0;
 					$user = User::where('id', $_POST["idUser"])->first();
-					$game = Game::where('id', $_POST["gameId"])->first();
 					
 					$user->participations()->attach($game, compact('state'));
-					
-					$question_id = $questions->random()->id;
-					$game->rounds()->create(compact('question_id', 'n_round'));
 				}
 			}
 			
 			//Player: nom => [etat (en jeu/éliminé), réponse à la question actuelle]
-			$participants = Participant::where('game_id', $_POST["gameId"])->get();
+			$participants = Participant::where('game_id', $game->id)->get();
 			$listPlayers = [];
 			
 			foreach($participants as $participant) {
 				
 			}
 			
-			$rounds =Round::where('game_id', $_POST["gameId"])->get();
+			$rounds =Round::where('game_id', $game->id)->get();
 			$lastId = $rounds->max('n_round');
 			$lastRound = $rounds->where('n_round', $lastId)->first();
 			
 			$question = Question::where('id', $lastRound->question_id)->first();
 			$questionAnswers = Answer::where('question_id', $question->id)->get();
-			
 				$data = ["players" => [
 					"Julien" => [1,0],
 					"Vincent" => [1,2],
