@@ -32,13 +32,19 @@ class GameController extends Controller
 		$interval = $dateNow->diff($dateFrom);
 		
 		$totalTime = new DateTime('00:05:00');
-		$secondesTotales = $totalTime->format('%i');
+		$secondesTotales = $game->max_duration;
 		
 		$mi = $interval->format('%i');
 		$si = $interval->format('%s');
 		$secondesEcoules = $mi * 60 + $si;
 
 		$remain = $secondesTotales - $secondesEcoules;
+		
+		if($remain <= 0)
+		{
+			//Créer nouveau round
+		}
+		
 
 				
 			if($_POST["typeRequest"] == "create"){
