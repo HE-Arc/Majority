@@ -55,6 +55,36 @@ class GameController extends Controller
 			$rounds =Round::where('game_id', $game->id)->get();
 			$lastId = $rounds->max('n_round');
 			$lastRound = $rounds->where('n_round', $lastId)->first();
+			
+			
+			$dateFrom = new DateTime($lastRound->created_at);
+			$dateNow = new DateTime();
+
+			$interval = $dateNow->diff($dateFrom);
+			$secondesTotales = $game->max_duration *60;
+			
+			$mi = $interval->format('%i');
+			$si = $interval->format('%s');
+			$secondesEcoules = $mi * 60 + $si;
+
+			$remain = $secondesTotales - $secondesEcoules;
+			
+			if($remain <= 0)
+			{
+				$game_id = $game->id;
+				$game = Game::where('id', $game_id)->first();
+				if($game != null){
+					$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
+					$LastId = $rounds->max('n_round');
+					$n_round = $LastId + 1;
+					$question = Question::inRandomOrder()->first();
+					$question_id = $question->id;
+					$game->rounds()->create(compact('n_round', 'question_id'));
+				}
+				
+				$_POST["typeRequest"] = "join";
+			}
+		
 
 			if($_POST["typeRequest"] == "answer"){
 				$game_id = $game->id;
@@ -68,34 +98,6 @@ class GameController extends Controller
 					}
 				//}
 			}
-
-			$dateFrom = new DateTime($lastRound->created_at);
-			$dateNow = new DateTime();
-			
-			echo $lastRound;
-
-			$interval = $dateNow->diff($dateFrom);
-			$secondesTotales = $game->max_duration;
-			
-			$mi = $interval->format('%i');
-			$si = $interval->format('%s');
-			$secondesEcoules = $mi * 60 + $si;
-
-			$remain = $secondesTotales - $secondesEcoules;
-			
-			if($remain <= 0)
-			{
-				//Appel de la fonction newGame de Joël
-				//Créer nouveau round
-				// Round::create([
-				// 'n_round' => $LastId+1,
-				// 'game_id' => $game->id,
-				// 'created_at' => $dateNow,
-				// 'updated_at' => $dateNow,
-				// ]);
-			}
-		
-	
 			
 			$question = Question::where('id', $lastRound->question_id)->first();
 			$questionAnswers = Answer::where('question_id', $question->id)->get();
@@ -135,4 +137,5 @@ class GameController extends Controller
 
        return view('game')->withData($data);
     }
+
 }
