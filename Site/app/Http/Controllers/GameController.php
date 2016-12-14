@@ -12,7 +12,6 @@ use App\Participant;
 use App\Game;
 use App\Round;
 use App\Answer;
-use App\Chosen_answer;
 
 class GameController extends Controller
 {
@@ -80,7 +79,6 @@ class GameController extends Controller
             $answer = Chosen_answer::where('user_id', $participant->user_id)
                                     ->where('n_round', 0)
                                     ->where('game_id', $game->id)->first();
-            print_r($participant->user_id);
             if($answer != null){
                 foreach($questionAnswers as $key => $QA){
                     if($QA->id == $answer->answer_id){
