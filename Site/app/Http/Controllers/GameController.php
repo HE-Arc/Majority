@@ -18,32 +18,6 @@ class GameController extends Controller
     public function show()
     {
 		
-		$games = Game::all();
-
-        foreach($games as $game) {
-            $rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
-			$LastId = $rounds->max('n_round');
-            $lastRound = $rounds->where('n_round', $LastId)->first();
-		}
-		
-		$dateFrom = new DateTime($lastRound->created_at);
-		$dateNow = new DateTime();
-
-		$interval = $dateNow->diff($dateFrom);
-		
-		$totalTime = new DateTime('00:05:00');
-		$secondesTotales = $game->max_duration;
-		
-		$mi = $interval->format('%i');
-		$si = $interval->format('%s');
-		$secondesEcoules = $mi * 60 + $si;
-
-		$remain = $secondesTotales - $secondesEcoules;
-		
-		if($remain <= 0)
-		{
-			//Créer nouveau round
-		}
 		
 
 				
@@ -81,6 +55,32 @@ class GameController extends Controller
 				$game = Game::where('id', $_POST["gameId"])->first();
 			}
 			
+			
+			
+
+			$dateFrom = new DateTime($lastRound->created_at);
+			$dateNow = new DateTime();
+
+			$interval = $dateNow->diff($dateFrom);
+			$secondesTotales = $game->max_duration;
+			
+			$mi = $interval->format('%i');
+			$si = $interval->format('%s');
+			$secondesEcoules = $mi * 60 + $si;
+
+			$remain = $secondesTotales - $secondesEcoules;
+			
+			/*if($remain <= 0)
+			{
+				//Créer nouveau round
+				Round::create([
+				'n_round' => $LastId+1,
+				'game_id' => $game->id,
+				'created_at' => $dateNow,
+				'updated_at' => $dateNow,
+				]);
+			}*/
+		
 			//Player: nom => [etat (en jeu/éliminé), réponse à la question actuelle]
 			$participants = Participant::where('game_id', $game->id)->get();
 			$listPlayers = [];
