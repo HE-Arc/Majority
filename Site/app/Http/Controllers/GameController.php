@@ -67,7 +67,7 @@ class GameController extends Controller
 					}
 				//}
 			}
-			
+
 			$question = Question::where('id', $lastRound->question_id)->first();
 			$questionAnswers = Answer::where('question_id', $question->id)->get();
 
@@ -99,18 +99,9 @@ class GameController extends Controller
 				$data = ["players" => $listPlayers,
 				"question" => $question->question,
 				"answers" => $questionAnswers,
-<<<<<<< HEAD
-				"gameStarted" => true];
-
-
-
-=======
 				"gameStarted" => true,
 				"gameId" => $game->id];
 
-
-
->>>>>>> d4ce6f8baf6ef8e3f0c1e8d4fb10d09d94075270
        return view('game')->withData($data);
     }
 }
