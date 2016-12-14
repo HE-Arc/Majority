@@ -76,6 +76,9 @@ class GameController extends Controller
 					
 					$user->participations()->attach($game, compact('state'));
 				}
+			}else if($_POST["typeRequest"] == "answer"){
+				$participant = Participant::where('user_id', $_POST["idUser"])->where('game_id', $_POST["gameId"])->first();
+				$game = Game::where('id', $_POST["gameId"])->first();
 			}
 			
 			//Player: nom => [etat (en jeu/éliminé), réponse à la question actuelle]
@@ -90,6 +93,19 @@ class GameController extends Controller
 			$lastId = $rounds->max('n_round');
 			$lastRound = $rounds->where('n_round', $lastId)->first();
 			
+			if($_POST["typeRequest"] == "answer"){
+				$game_id = $game->id;
+				$n_round = $lastRound->n_round;
+				$answer_id = $_POST["idAnswer"];
+				$user_id = $participant->user_id;
+				//if($participant->state != 0) {
+					$answer = Answer::where('id', $_POST["idAnswer"])->first();
+					if($answer != null) {
+						$answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+					}
+				//}
+			}
+			
 			$question = Question::where('id', $lastRound->question_id)->first();
 			$questionAnswers = Answer::where('question_id', $question->id)->get();
 				$data = ["players" => [
@@ -100,7 +116,9 @@ class GameController extends Controller
 				"question" => $question->question,
 				"answers" => $questionAnswers,
 				"gameStarted" => true,
-				"remainingTime" => $remain];
+				"remainingTime" => $remain,
+				"gameId" => $game->id];
+
 				
        return view('game')->withData($data);
     }
