@@ -46,11 +46,28 @@ class GameController extends Controller
 
 					$user->participations()->attach($game, compact('state'));
 				}
+			}else if($_POST["typeRequest"] == "answer"){
+				$participant = Participant::where('user_id', $_POST["idUser"])->where('game_id', $_POST["gameId"])->first();
+				$game = Game::where('id', $_POST["gameId"])->first();
 			}
 
 			$rounds =Round::where('game_id', $game->id)->get();
 			$lastId = $rounds->max('n_round');
 			$lastRound = $rounds->where('n_round', $lastId)->first();
+
+			if($_POST["typeRequest"] == "answer"){
+				$game_id = $game->id;
+				$n_round = $lastRound->n_round;
+				$answer_id = $_POST["idAnswer"];
+				$user_id = $participant->user_id;
+				//if($participant->state != 0) {
+					$answer = Answer::where('id', $_POST["idAnswer"])->first();
+					if($answer != null) {
+						$answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+					}
+				//}
+			}
+			
 			$question = Question::where('id', $lastRound->question_id)->first();
 			$questionAnswers = Answer::where('question_id', $question->id)->get();
 
@@ -82,10 +99,18 @@ class GameController extends Controller
 				$data = ["players" => $listPlayers,
 				"question" => $question->question,
 				"answers" => $questionAnswers,
+<<<<<<< HEAD
 				"gameStarted" => true];
 
 
 
+=======
+				"gameStarted" => true,
+				"gameId" => $game->id];
+
+
+
+>>>>>>> d4ce6f8baf6ef8e3f0c1e8d4fb10d09d94075270
        return view('game')->withData($data);
     }
 }
