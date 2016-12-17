@@ -51,7 +51,18 @@ class GameController extends Controller
             $participant = Participant::where('user_id', $_POST["idUser"])->where('game_id', $_POST["gameId"])->first();
             $game = Game::where('id', $_POST["gameId"])->first();
         }
-
+		
+		$timeout = false;
+		if($_POST["typeRequest"] == "timeout") {
+			$timeout = true;
+			
+			$game_id = $_POST["gameId"];
+			$game = Game::where('id', $game_id)->first();
+			$rounds =Round::where('game_id', $game->id)->get();
+			$n_round = $rounds->max('n_round');
+		}
+	
+		//$game = Game::where('id', $_POST["gameId"])->first();
         $rounds =Round::where('game_id', $game->id)->get();
         $lastId = $rounds->max('n_round');
         $lastRound = $rounds->where('n_round', $lastId)->first();
@@ -67,20 +78,56 @@ class GameController extends Controller
 		$secondesEcoules = $mi * 60 + $si;
 
 		$remain = $secondesTotales - $secondesEcoules;
-
-		if($remain <= 0)
+		
+		if($remain <= 0 || $timeout)
 		{
+			$timeout = false;
 			$game_id = $game->id;
 			$game = Game::where('id', $game_id)->first();
 			if($game != null){
 				$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
-				$LastId = $rounds->max('n_round');
-				$n_round = $LastId + 1;
+				$n_round = $rounds->max('n_round');
+				
+				$answers = Chosen_answer::where('game_id', $game_id)
+										  ->where('n_round', $n_round);
+
+				$counter = Chosen_answer::select(\DB::raw('count(user_id) as user_count, game_id, n_round, answer_id'))
+										   ->where('game_id', $game_id)
+										   ->where('n_round', $n_round)
+										   ->groupBy(['game_id', 'n_round', 'answer_id'])
+										   ->orderBy('user_count', 'desc')->get();
+				if(isset($counter[0])){
+						$max = $counter[0]->user_count;
+						$answerIdMax = [];
+						foreach($counter as $count){
+							if($count->user_count < $max){
+								break;
+							}
+							array_push($answerIdMax, $count->answer_id);
+						}
+						$survivor = [];
+						foreach($answers as $answer){
+							if(!in_array($answer->answer_id, $answerIdMax)) {
+								Participant::where('user_id', $answer->user_id)
+											->where('game_id', $answer->game_id)
+											->update(['state' => 1]);
+							} else {
+								$survivor.array_push($answer->user_id);
+							}
+						}
+				
+					if(count($survivor) == 2){
+						Participant::where('user_id', $survivor[0])
+									 ->orwhere('user_id', $survivor[1])
+									 ->where('game_id', $game_id)
+									 ->update(['state' => 2]);
+					}
+				}
+				$n_round  += 1;
 				$question = Question::inRandomOrder()->first();
 				$question_id = $question->id;
 				$game->rounds()->create(compact('n_round', 'question_id'));
 			}
-
 			$_POST["typeRequest"] = "join";
 		}
 
