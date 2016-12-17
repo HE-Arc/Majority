@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 use App\Chosen_answer;
@@ -20,6 +21,7 @@ class GameController extends Controller
         if($_POST["typeRequest"] == "create"){
             $questions = Question::all();
 
+            $n_round = 0;
             $max_duration = $_POST["duration"];
             $max_player = $_POST["nbPlayer"];
             $description = $_POST["name"];
@@ -28,7 +30,7 @@ class GameController extends Controller
             $game = $owner->games()->create(compact('max_duration', 'max_player', 'description'));
 
 
-            $state = 0;
+            $state = 1;
             $owner->participations()->attach($game, compact('state'));
 
             $question_id = $questions->random()->id;
@@ -74,12 +76,17 @@ class GameController extends Controller
         //Player: nom => [etat (en jeu/éliminé), réponse à la question actuelle]
         $participants = Participant::where('game_id', $game->id)->get();
         $listPlayers = [];
+        $logedParticipant = Participant::where('user_id', Auth::id())->where('game_id', $game->id)->first();
+        $logedParticipantAnswer = Chosen_answer::where('user_id', $logedParticipant->user_id)
+                                ->where('n_round', $lastRound->n_round)
+                                ->where('game_id', $game->id)->first();
+
 
         foreach($participants as $participant) {
             $answer = Chosen_answer::where('user_id', $participant->user_id)
-                                    ->where('n_round', 0)
+                                    ->where('n_round', $lastRound->n_round)
                                     ->where('game_id', $game->id)->first();
-            if($answer != null){
+            if($answer != null && $logedParticipantAnswer != null){
                 foreach($questionAnswers as $key => $QA){
                     if($QA->id == $answer->answer_id){
                         $answer = $key+1;
@@ -99,7 +106,8 @@ class GameController extends Controller
         "question" => $question->question,
         "answers" => $questionAnswers,
         "gameStarted" => true,
-        "gameId" => $game->id];
+        "gameId" => $game->id,
+        "owner" => $game->owner_id];
 
         return view('game')->withData($data);
     }
