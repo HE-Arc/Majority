@@ -19,9 +19,10 @@ class Chosen_AnswersTablesSeeder extends Seeder
      */
     public function run()
     {
-            $games = Game::all();
 
-            //print($games);
+        $games = Game::all();
+
+        //print($games);
         foreach($games as $game) {
             $rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
             $LastId = $rounds->max('n_round');
@@ -47,5 +48,6 @@ class Chosen_AnswersTablesSeeder extends Seeder
             //debug
             //print("\n");
         }
+
     }
 }
