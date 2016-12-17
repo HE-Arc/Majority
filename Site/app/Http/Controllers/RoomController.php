@@ -38,7 +38,7 @@ class RoomController extends Controller
         }
 
         $games = Game::whereIn('id', $gameId)->get();
-
+        //$games = Game::all();
         $data = [];
 
         foreach($games as $game) {

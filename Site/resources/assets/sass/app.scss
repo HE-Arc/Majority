@@ -52,11 +52,11 @@ th{
 }
 
 .reponse{
-	width: 150px;
+	width: 200px;
 }
 
 #reponse1, .chooseAnswer1{
-	background-color: #aaffaa;
+	background-color: #aaffaa; 
 }
 
 #reponse2, .chooseAnswer2{
@@ -73,4 +73,9 @@ th{
 
 .eliminatedPlayer{
 	background-color: #333333;
+}
+
+.timeout{
+    margin-top: 100px;
+    text-align: center;
 }

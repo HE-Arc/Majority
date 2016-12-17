@@ -8,7 +8,7 @@
         <div class="col-md-10 col-md-offset-1">
 		@if(Auth::check())
             <div class="panel panel-success">
-                <div class="panel-heading">Partie</div>
+                <div class="panel-heading">Round {{$data["nRound"]}}</div>
 				@if($data["gameStarted"])
 				<div class="questionsReponses">
 				<p class="question">{{$data["question"]}}</p>
