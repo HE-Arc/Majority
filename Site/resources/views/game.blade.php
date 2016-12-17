@@ -11,7 +11,8 @@
                 <div class="panel-heading">Partie</div>
 				@if($data["gameStarted"])
 				<div class="questionsReponses">
-				<p class="question">{{$data["question"]}} ?</p>
+				<p class="question">{{$data["question"]}}</p>
+				<p class="question">Secondes restantes avant le prochain round: {{$data["remainingTime"]}}</p>
 				<table class="listReponses">
 					<tr>
 						<td>{!! Form::open(['url' => './game']) !!}

@@ -13,6 +13,7 @@ use App\Participant;
 use App\Game;
 use App\Round;
 use App\Answer;
+use DateTime;
 
 class GameController extends Controller
 {
@@ -54,6 +55,34 @@ class GameController extends Controller
         $rounds =Round::where('game_id', $game->id)->get();
         $lastId = $rounds->max('n_round');
         $lastRound = $rounds->where('n_round', $lastId)->first();
+
+		$dateFrom = new DateTime($lastRound->created_at);
+		$dateNow = new DateTime();
+
+		$interval = $dateNow->diff($dateFrom);
+		$secondesTotales = $game->max_duration *60;
+
+		$mi = $interval->format('%i');
+		$si = $interval->format('%s');
+		$secondesEcoules = $mi * 60 + $si;
+
+		$remain = $secondesTotales - $secondesEcoules;
+
+		if($remain <= 0)
+		{
+			$game_id = $game->id;
+			$game = Game::where('id', $game_id)->first();
+			if($game != null){
+				$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
+				$LastId = $rounds->max('n_round');
+				$n_round = $LastId + 1;
+				$question = Question::inRandomOrder()->first();
+				$question_id = $question->id;
+				$game->rounds()->create(compact('n_round', 'question_id'));
+			}
+
+			$_POST["typeRequest"] = "join";
+		}
 
         if($_POST["typeRequest"] == "answer"){
             $game_id = $game->id;
@@ -107,8 +136,11 @@ class GameController extends Controller
         "answers" => $questionAnswers,
         "gameStarted" => true,
         "gameId" => $game->id,
+        "remainingTime" => $remain,
         "owner" => $game->owner_id];
 
-        return view('game')->withData($data);
+
+       return view('game')->withData($data);
     }
+
 }

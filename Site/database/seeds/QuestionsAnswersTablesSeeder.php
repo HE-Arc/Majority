@@ -27,9 +27,9 @@ class QuestionsAnswersTablesSeeder extends Seeder
                         ['1',
                         '11',
                         'plus',
-                        'pas assez',
+                        'pas assez']],/*,
                         '1914',
-                        'Jules Cesar']],
+                        'Jules Cesar']],*/
         ["Que pensez-vous de ce texte \":)\"",
                         ['Introspection',
                         "c'est beau",
