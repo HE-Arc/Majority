@@ -172,7 +172,7 @@ class GameController extends Controller
 
         if($_POST["typeRequest"] == "answer"){
             $game_id = $game->id;
-            $n_round = $lastRound->n_round;
+            $n_round = $_POST["nRound"];
             $answer_id = $_POST["idAnswer"];
             $user_id = $participant->user_id;
             //if($participant->state != 0) {
