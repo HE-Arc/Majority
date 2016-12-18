@@ -61,7 +61,7 @@ class GameController extends Controller
 			$rounds =Round::where('game_id', $game->id)->get();
 			$n_round = $rounds->max('n_round');
 		}
-
+		$fin = "";
 		//$game = Game::where('id', $_POST["gameId"])->first();
         $rounds =Round::where('game_id', $game->id)->get();
         $lastId = $rounds->max('n_round');
@@ -87,10 +87,10 @@ class GameController extends Controller
 			if($game != null){
 				$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
 				$n_round = $rounds->max('n_round');
-
+				
 				$answers = Chosen_answer::where('game_id', $game_id)
-										  ->where('n_round', $n_round);
-
+										  ->where('n_round', $n_round)->get();
+										  
 				$counter = Chosen_answer::select(\DB::raw('count(user_id) as user_count, game_id, n_round, answer_id'))
 										   ->where('game_id', $game_id)
 										   ->where('n_round', $n_round)
@@ -112,21 +112,31 @@ class GameController extends Controller
 											->where('game_id', $answer->game_id)
 											->update(['state' => 1]);
 							} else {
-								$survivor.array_push($answer->user_id);
+								array_push($survivor, $answer->user_id);
 							}
 						}
-
 					if(count($survivor) == 2){
 						Participant::where('user_id', $survivor[0])
 									 ->orwhere('user_id', $survivor[1])
 									 ->where('game_id', $game_id)
 									 ->update(['state' => 2]);
+						$fin= "Partie terminée";
+						$remaining = "Partie terminée";
+					}
+					else{
+						if(count($survivor) < 2){
+							$remaining = "Partie terminée";
+							$fin= "Partie terminée";
+						}
+						else{
+							$n_round  += 1;
+							$question = Question::inRandomOrder()->first();
+							$question_id = $question->id;
+							$game->rounds()->create(compact('n_round', 'question_id'));
+						}
 					}
 				}
-				$n_round  += 1;
-				$question = Question::inRandomOrder()->first();
-				$question_id = $question->id;
-				$game->rounds()->create(compact('n_round', 'question_id'));
+				
 			}
 			//$_POST["typeRequest"] = "join";
             $rounds =Round::where('game_id', $game->id)->get();
@@ -135,6 +145,7 @@ class GameController extends Controller
 
     		$remain = $secondesTotales;
 		}
+		$remaining = "Secondes restantes avant le prochain round: ".$remain;
 
         if($_POST["typeRequest"] == "answer"){
             $game_id = $game->id;
@@ -188,9 +199,10 @@ class GameController extends Controller
         "answers" => $questionAnswers,
         "gameStarted" => true,
         "gameId" => $game->id,
-        "remainingTime" => $remain,
+        "remainingTime" => $remaining,
         "owner" => $game->owner_id,
-        "nRound" => $lastRound->n_round];
+        "nRound" => $lastRound->n_round,
+		"finPartie" => $fin];
 
 
        return view('game')->withData($data);
