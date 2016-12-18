@@ -96,6 +96,7 @@ class GameController extends Controller
 										   ->where('n_round', $n_round)
 										   ->groupBy(['game_id', 'n_round', 'answer_id'])
 										   ->orderBy('user_count', 'desc')->get();
+				$participants = Participant::where('game_id',$game_id)->get();
 				if(isset($counter[0])){
 						$max = $counter[0]->user_count;
 						$answerIdMax = [];
@@ -114,6 +115,22 @@ class GameController extends Controller
 							} else {
 								array_push($survivor, $answer->user_id);
 							}
+						}
+						foreach($participants as $participant){
+							$response = false;
+							foreach($answers as $ans){
+								if($ans->user_id ==$participant->user_id)
+								{
+									$response=true;
+								}
+							}
+							if ($response == false) {
+							   Participant::where('user_id', $participant->user_id)
+											->where('game_id', $game_id)
+											->update(['state' => 0]);
+								$response=false;
+							}
+							
 						}
 					if(count($survivor) == 2){
 						Participant::where('user_id', $survivor[0])
