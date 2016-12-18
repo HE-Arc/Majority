@@ -169,14 +169,15 @@ class GameController extends Controller
             $n_round = $_POST["nRound"];
             $answer_id = $_POST["idAnswer"];
             $user_id = $participant->user_id;
-            //if($participant->state != 0) {
-            $answer = Answer::where('id', $_POST["idAnswer"])->first();
-            if($answer != null) {
-                $answerExist = Chosen_answer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
-                if($answerExist == null){
-                    $answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
-                }
-            }
+            if($participant->state == 1) {
+				$answer = Answer::where('id', $_POST["idAnswer"])->first();
+				if($answer != null) {
+					$answerExist = Chosen_answer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
+					if($answerExist == null){
+						$answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+					}
+				}
+			}
         }
 
         $question = Question::where('id', $lastRound->question_id)->first();
