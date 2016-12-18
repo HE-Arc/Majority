@@ -21,6 +21,7 @@
 							{!! Form::hidden('idUser', Auth::id()) !!}
 							{!! Form::hidden('idAnswer', $data["answers"][0]->id) !!}
 							{!! Form::hidden('gameId', $data["gameId"]) !!}
+							{!! Form::hidden('nRound', $data["nRound"]) !!}
 							{!! Form::submit($data["answers"][0]->answer, ['id' => 'reponse1', 'class' => 'reponse']) !!}
 						{!! Form::close() !!}</td>
 						<td>{!! Form::open(['url' => './game']) !!}
@@ -28,6 +29,7 @@
 							{!! Form::hidden('idUser', Auth::id()) !!}
 							{!! Form::hidden('idAnswer', $data["answers"][1]->id) !!}
 							{!! Form::hidden('gameId', $data["gameId"]) !!}
+							{!! Form::hidden('nRound', $data["nRound"]) !!}
 							{!! Form::submit($data["answers"][1]->answer, ['id' => 'reponse2', 'class' => 'reponse']) !!}
 						{!! Form::close() !!}</td>
 					</tr>
@@ -37,6 +39,7 @@
 							{!! Form::hidden('idUser', Auth::id()) !!}
 							{!! Form::hidden('idAnswer', $data["answers"][2]->id) !!}
 							{!! Form::hidden('gameId', $data["gameId"]) !!}
+							{!! Form::hidden('nRound', $data["nRound"]) !!}
 							{!! Form::submit($data["answers"][2]->answer, ['id' => 'reponse3', 'class' => 'reponse']) !!}
 						{!! Form::close() !!}</td>
 						<td>{!! Form::open(['url' => './game']) !!}
@@ -44,6 +47,7 @@
 							{!! Form::hidden('idUser', Auth::id()) !!}
 							{!! Form::hidden('idAnswer', $data["answers"][3]->id) !!}
 							{!! Form::hidden('gameId', $data["gameId"]) !!}
+							{!! Form::hidden('nRound', $data["nRound"]) !!}
 							{!! Form::submit($data["answers"][3]->answer, ['id' => 'reponse4', 'class' => 'reponse']) !!}
 						{!! Form::close() !!}</td>
 					</tr>
