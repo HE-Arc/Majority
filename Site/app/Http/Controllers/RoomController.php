@@ -37,7 +37,7 @@ class RoomController extends Controller
 			}
 
 			foreach($participants as $participant) {
-				if($participant->user_id == $user->id && $participant->state != 2) {
+				if($participant->user_id == $user->id && $participant->state == 1) {
 					$addRoom = true;
 					break;
 				}
