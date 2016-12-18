@@ -19,6 +19,12 @@ class GameController extends Controller
 {
     public function show()
     {
+		
+		if($_POST["typeRequest"] == "refresh"){
+            $game_id  = $_POST["gameId"];
+            $game = Game::where('id', $game_id)->first();
+			$user = User::where('id', $_POST["idUser"])->first();
+        }
         if($_POST["typeRequest"] == "create"){
             $questions = Question::all();
 
