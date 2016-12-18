@@ -110,7 +110,7 @@ class GameController extends Controller
 							if(!in_array($answer->answer_id, $answerIdMax)) {
 								Participant::where('user_id', $answer->user_id)
 											->where('game_id', $answer->game_id)
-											->update(['state' => 1]);
+											->update(['state' => 0]);
 							} else {
 								array_push($survivor, $answer->user_id);
 							}
