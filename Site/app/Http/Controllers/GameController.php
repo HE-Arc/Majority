@@ -19,7 +19,7 @@ class GameController extends Controller
 {
     public function show()
     {
-		
+
 		if($_POST["typeRequest"] == "refresh"){
             $game_id  = $_POST["gameId"];
             $game = Game::where('id', $game_id)->first();
@@ -93,10 +93,10 @@ class GameController extends Controller
 			if($game != null){
 				$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
 				$n_round = $rounds->max('n_round');
-				
+
 				$answers = Chosen_answer::where('game_id', $game_id)
 										  ->where('n_round', $n_round)->get();
-										  
+
 				$counter = Chosen_answer::select(\DB::raw('count(user_id) as user_count, game_id, n_round, answer_id'))
 										   ->where('game_id', $game_id)
 										   ->where('n_round', $n_round)
@@ -136,7 +136,7 @@ class GameController extends Controller
 											->update(['state' => 0]);
 								$response=false;
 							}
-							
+
 						}
 					if(count($survivor) == 2){
 						Participant::where('user_id', $survivor[0])
@@ -159,7 +159,7 @@ class GameController extends Controller
 						}
 					}
 				}
-				
+
 			}
 			//$_POST["typeRequest"] = "join";
             $rounds =Round::where('game_id', $game->id)->get();
@@ -171,16 +171,17 @@ class GameController extends Controller
 		$remaining = "Secondes restantes avant le prochain round: ".$remain;
 
         if($_POST["typeRequest"] == "answer"){
-            $game_id = $game->id;
-            $n_round = $_POST["nRound"];
-            $answer_id = $_POST["idAnswer"];
-            $user_id = $participant->user_id;
-            //if($participant->state != 0) {
-            $answer = Answer::where('id', $_POST["idAnswer"])->first();
-            if($answer != null) {
-                $answerExist = Chosen_answer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
-                if($answerExist == null){
-                    $answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+            if($participant->state == 1) {
+                $game_id = $game->id;
+                $n_round = $_POST["nRound"];
+                $answer_id = $_POST["idAnswer"];
+                $user_id = $participant->user_id;
+                $answer = Answer::where('id', $_POST["idAnswer"])->first();
+                if($answer != null) {
+                    $answerExist = Chosen_answer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
+                    if($answerExist == null){
+                        $answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+                    }
                 }
             }
         }
