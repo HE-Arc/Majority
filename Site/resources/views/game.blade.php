@@ -52,9 +52,18 @@
 						{!! Form::close() !!}</td>
 					</tr>
 
-                    @if(Auth::id() == $data["owner"])
+                    
                     <tr>
-                        <td colspan="2">
+                        <td>
+                            {!! Form::open(['url' => './game']) !!}
+                            {!! Form::hidden('typeRequest', 'refresh') !!}
+                            {!! Form::hidden('idUser', Auth::id()) !!}
+                            {!! Form::hidden('gameId', $data["gameId"]) !!}
+                            {!! Form::submit('Refresh', ['class' => 'question']) !!}
+                            {!! Form::close() !!}
+                        </td>
+					@if(Auth::id() == $data["owner"])
+                        <td>
                             {!! Form::open(['url' => './game']) !!}
                             {!! Form::hidden('typeRequest', 'timeout') !!}
                             {!! Form::hidden('idUser', Auth::id()) !!}

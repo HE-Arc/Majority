@@ -18,7 +18,7 @@ class RoomController extends Controller
     {
         $games = Game::all();
 		$rounds1 = Round::where('n_round', 1)->get();
-		
+
 		$user = User::where('id', Auth::id())->first();
         $data = [];
 
@@ -35,14 +35,14 @@ class RoomController extends Controller
 					}
 				}
 			}
-			
+
 			foreach($participants as $participant) {
-				if($participant->user_id == $user->id) {
+				if($participant->user_id == $user->id && $participant->state == 1) {
 					$addRoom = true;
 					break;
 				}
 			}
-			
+
 			if($addRoom){
 				array_push($data, [$game, count($participants)]);
 			}
