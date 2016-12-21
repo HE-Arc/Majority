@@ -15,7 +15,7 @@ Route::get('/','ListController@show');
 
 Auth::routes();
 
-Route::get('auth/logout', 'Auth\AuthController@logout');
+//Route::get('auth/logout', 'Auth\AuthController@logout');
 
 Route::get('/home', 'HomeController@index');
 
