@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
-    public function Chosen_answers()
+    public function chosenAnswers()
     {
-        return $this->hasMany('App\Chosen_answer');
+        return $this->hasMany('App\ChosenAnswer');
     }
 }

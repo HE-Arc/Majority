@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<link href="{{ asset('css/majority-css.css') }}" rel="stylesheet" type="text/css" >
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -103,6 +101,7 @@
             </div>
 			@endif
 
+            {{-- Ceci doit se faire dans le contrôleur. -Yoan --}}
 			@if(Auth::guest())
             <a href="./login"> Connectez-vous pour jouer</a>
 			@endif

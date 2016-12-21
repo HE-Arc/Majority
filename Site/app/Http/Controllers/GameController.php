@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
-use App\Chosen_answer;
+use App\ChosenAnswer;
 use App\User;
 use App\Question;
 use App\Participant;
@@ -20,6 +20,7 @@ class GameController extends Controller
     public function show()
     {
 
+        // FIXME: WTF! --Yoan
 		if($_POST["typeRequest"] == "refresh"){
             $game_id  = $_POST["gameId"];
             $game = Game::where('id', $game_id)->first();
@@ -94,10 +95,10 @@ class GameController extends Controller
 				$rounds = Round::where('game_id', $game->id)->get(); //récupère la liste des rounds popur une game défini
 				$n_round = $rounds->max('n_round');
 
-				$answers = Chosen_answer::where('game_id', $game_id)
+				$answers = ChosenAnswer::where('game_id', $game_id)
 										  ->where('n_round', $n_round)->get();
 
-				$counter = Chosen_answer::select(\DB::raw('count(user_id) as user_count, game_id, n_round, answer_id'))
+				$counter = ChosenAnswer::select(\DB::raw('count(user_id) as user_count, game_id, n_round, answer_id'))
 										   ->where('game_id', $game_id)
 										   ->where('n_round', $n_round)
 										   ->groupBy(['game_id', 'n_round', 'answer_id'])
@@ -178,9 +179,9 @@ class GameController extends Controller
                 $user_id = $participant->user_id;
                 $answer = Answer::where('id', $_POST["idAnswer"])->first();
                 if($answer != null) {
-                    $answerExist = Chosen_answer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
+                    $answerExist = ChosenAnswer::where('n_round', $n_round)->where('game_id', $game_id)->where('user_id', $user_id)->first();
                     if($answerExist == null){
-                        $answer->Chosen_answers()->create(compact('n_round', 'game_id', 'user_id'));
+                        $answer->ChosenAnswers()->create(compact('n_round', 'game_id', 'user_id'));
                     }
                 }
             }
@@ -193,13 +194,13 @@ class GameController extends Controller
         $participants = Participant::where('game_id', $game->id)->get();
         $listPlayers = [];
         $logedParticipant = Participant::where('user_id', Auth::id())->where('game_id', $game->id)->first();
-        $logedParticipantAnswer = Chosen_answer::where('user_id', $logedParticipant->user_id)
+        $logedParticipantAnswer = ChosenAnswer::where('user_id', $logedParticipant->user_id)
                                 ->where('n_round', $lastRound->n_round)
                                 ->where('game_id', $game->id)->first();
 
 
         foreach($participants as $participant) {
-            $answer = Chosen_answer::where('user_id', $participant->user_id)
+            $answer = ChosenAnswer::where('user_id', $participant->user_id)
                                     ->where('n_round', $lastRound->n_round)
                                     ->where('game_id', $game->id)->first();
             if($answer != null && ($logedParticipantAnswer != null || $logedParticipant->state != 1)){

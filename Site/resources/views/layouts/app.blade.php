@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Majority') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{ asset('css/majority-css.css') }}" rel="stylesheet" type="text/css" >
 
     <!-- Scripts -->
     <script>
@@ -73,9 +73,14 @@
                                     </li>
                                 </ul>
                             </li>
+                            {{--
+                                Vous n'avez pas l'impression que ça fait doublon??
+                                Et logout doit se faire en POST.
+                                -Yoan
+                            --}}
 							<li>
 								<a href="{{ url('/logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">>
+                                                     document.getElementById('logout-form').submit();">
                                     Déconnexion
                                 </a></li>
                         @endif
@@ -88,6 +93,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

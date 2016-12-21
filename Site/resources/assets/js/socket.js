@@ -2,9 +2,10 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
-var redis = new Redis();
+var redis = new Redis(process.env.REDIS_HOST || 'localhost');
 
-redis.subscribe('channel-room', function(err,count)){
+redis.subscribe('channel-room', function(err, count){
+    console.log(err, count)
 });
 
 redis.on('message', function(channel, message){
@@ -13,6 +14,6 @@ redis.on('message', function(channel, message){
 	io.emit(channel + ':' + message.event, message.data);
 });
 
-http.listen(3000, function(){
-	console.log('listening on Port 3000')
+http.listen(6001, '0.0.0.0', function(){
+	console.log('listening on Port 6001')
 });
